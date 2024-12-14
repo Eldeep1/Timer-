@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import java.time.Duration;
+import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 
 public class AnchorPaneController {
 
@@ -14,7 +16,11 @@ public class AnchorPaneController {
 
     @FXML
     private Label duration;
+    @FXML
+    private Button pauseButton;
 
+        @FXML
+    private AnchorPane myPane;
     public void setID(int id) {
         this.ID = id;
 
@@ -35,14 +41,23 @@ public class AnchorPaneController {
     @FXML
     public void onPauseButtonClick() {
 
-        System.out.println("we clicked on pause");
-
         TimerThread thread = Shared.threads.get(ID);
-        Timer timer = Shared.timers.get(ID);
-        timer.setRemainingDuration(thread.getTimer().getRemainingDuration());
-        Shared.timers.put(ID, timer);
-        thread.stopThread();
-        System.out.println("this thread id is : " + ID);
+        if (thread.isAlive()) {
+            Timer timer = Shared.timers.get(ID);
+            timer.setRemainingDuration(thread.getTimer().getRemainingDuration());
+            Shared.timers.put(ID, timer);
+            thread.stopThread();
+            pauseButton.setText("resume");
+            System.out.println("this thread id is : " + ID);
+        } else {
+            Timer timer = Shared.timers.get(ID);
+            TimerThread newThread = new TimerThread(timer);
+            Shared.threads.put(ID, newThread);
+            newThread.start();
+            pauseButton.setText("pause");
+
+        }
+
     }
 
     @FXML
@@ -50,22 +65,28 @@ public class AnchorPaneController {
 //        Shared.updateDuration(ID, "00:00");
         Timer timer = Shared.timers.get(ID);
         timer.setRemainingDuration(timer.getActualDuration());
-        
-                TimerThread oldThread = Shared.threads.get(ID);
-                oldThread.stopThread();
-        
+
+        TimerThread oldThread = Shared.threads.get(ID);
+        oldThread.stopThread();
+
         TimerThread thread = new TimerThread(timer);
         Shared.threads.put(ID, thread);
         thread.start();
-//        Shared.updateDuration(ID, timer.getActualDuration());
+        pauseButton.setText("pause");
 
-//        TextField newOne= new TextField("meowww");
-//        Shared.labeltextField.set(Shared.identifiers.indexOf(ID), newOne);
     }
 
     @FXML
     public void onDeleteButtonClick() {
-        System.out.println("we clicked on delete button");
+        Shared.threads.get(ID).stopThread();
+        
+        Shared.timers.remove(ID);
+        Shared.durations.remove(ID);
+        Shared.labeltextField.remove(ID);
+        Shared.threads.remove(ID);
+        
+        myPane.getChildren().clear();
+
     }
 
 }

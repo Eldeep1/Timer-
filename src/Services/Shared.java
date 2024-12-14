@@ -20,10 +20,8 @@ import javafx.scene.control.TextField;
  */
 public class Shared {
 
-    public static List<TextField> labeltextField = new ArrayList<>();
-    public static List<TextField> timetextField = new ArrayList<>();
-    public static List<Integer> identifiers = new ArrayList<>();
-    // Map to hold durations (ID -> Duration)
+    public static Map<Integer, TextField> labeltextField = new HashMap<>();
+    
 
     public static Map<Integer, TimerThread> threads = new HashMap<>();
     public static Map<Integer, Timer> timers = new HashMap<>();
@@ -41,18 +39,18 @@ public class Shared {
     public static void updateDuration(int id, Duration newDuration) {
         if (durations.containsKey(id)) {
             System.out.println("the id of the timer is: " + id + " and the new duration is " + newDuration);
-            
-            long hours = newDuration.toHours();                    
-            long minutes = newDuration.toMinutes()%60;
+
+            long hours = newDuration.toHours();
+            long minutes = newDuration.toMinutes() % 60;
             long seconds = newDuration.toSeconds() % 60;
 
             String current_duration = "";
-            
-            current_duration+=((hours<=9 ? ("0"+Long.toString(hours)):Long.toString(hours)));
+
+            current_duration += ((hours <= 9 ? ("0" + Long.toString(hours)) : Long.toString(hours)));
             current_duration += " : ";
-            current_duration+=((minutes<=9 ? ("0"+Long.toString(minutes)):Long.toString(minutes)));
+            current_duration += ((minutes <= 9 ? ("0" + Long.toString(minutes)) : Long.toString(minutes)));
             current_duration += " : ";
-            current_duration+=((seconds<=9 ? ("0"+Long.toString(seconds)):Long.toString(seconds)));
+            current_duration += ((seconds <= 9 ? ("0" + Long.toString(seconds)) : Long.toString(seconds)));
             System.out.println(current_duration);
             durations.get(id).set(current_duration);
         }

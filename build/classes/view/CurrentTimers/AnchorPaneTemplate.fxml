@@ -4,12 +4,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ViewModel.CurrentTimers.AnchorPaneController">
+<AnchorPane fx:id="myPane" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ViewModel.CurrentTimers.AnchorPaneController">
     <children>
         <Label fx:id="duration" layoutX="100.0" prefHeight="63.0" prefWidth="87.0" text="countDown" />
         <Label fx:id="description" layoutX="230.0" layoutY="12.0" prefHeight="40.0" prefWidth="97.0" text="Description" />
-        <Button layoutX="57.0" layoutY="63.0" mnemonicParsing="false" onAction="#onPauseButtonClick" text="pause" />
-        <Button layoutX="188.0" layoutY="63.0" mnemonicParsing="false" onAction="#onResetButtonClick"  text="reset" />
+        <Button fx:id="pauseButton" layoutX="57.0" layoutY="63.0" mnemonicParsing="false" onAction="#onPauseButtonClick" text="pause" />
+        <Button layoutX="188.0" layoutY="63.0" mnemonicParsing="false" onAction="#onResetButtonClick"  text="reload" />
         <Button layoutX="313.0" layoutY="63.0" mnemonicParsing="false" onAction="#onDeleteButtonClick" text="delete" />
     </children>
 </AnchorPane>
