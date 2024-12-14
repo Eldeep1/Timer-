@@ -80,6 +80,7 @@ public class HomePageController implements Initializable {
         timeTextField.setLayoutX(8.0);
         timeTextField.setLayoutY(25.0);
         timeTextField.setPromptText("HH:MM:SS");
+        timeTextField.setText("00:00:00");
         tempTimetextField.add(timeTextField);
 
         TextField labelTextField = new TextField();
@@ -97,42 +98,22 @@ public class HomePageController implements Initializable {
         textAreaContainer.getChildren().add(newAnchorPane);
     }
 
-    private static Duration parseDuration(String timeString) {
-        String[] parts = timeString.split(":");
-        if (parts.length != 3) {
-            throw new IllegalArgumentException("Invalid time format: " + timeString);
-        }
-
-        try {
-            int hours = Integer.parseInt(parts[0]);
-            int minutes = Integer.parseInt(parts[1]);
-            int seconds = Integer.parseInt(parts[2]);
-
-            // Validation
-            if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59 || seconds < 0 || seconds > 59) {
-                throw new IllegalArgumentException("Invalid time values: " + timeString);
-            }
-
-            return Duration.ofHours(hours).plusMinutes(minutes).plusSeconds(seconds);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid time format: " + timeString, e);
-        }
-    }
-
     @FXML
     public void onDoneButtonClick(ActionEvent e) {
         Shared shared = new Shared();
         for (int i = 0; i < tempLabeltextField.size(); i++) {
-            IDTracker++;
             Shared.labeltextField.add(tempLabeltextField.get(i));
             Shared.timetextField.add(tempTimetextField.get(i));
             Shared.identifiers.add(IDTracker);
 
-            Shared.durations.putIfAbsent(IDTracker, new SimpleStringProperty(tempTimetextField.get(i).getText()));
+            Shared.durations.putIfAbsent(IDTracker, new SimpleStringProperty(tempTimetextField.get(i).getText())); // Default
+                                                                                                                   // value
 
-            // Get duration from text field and convert to Duration object
-            Duration timerDuration = parseDuration(tempTimetextField.get(i).getText());
-            shared.addTimer(IDTracker, tempLabeltextField.get(i).getText(), timerDuration);
+            // System.out.println("the timer with time: " + timetextField.get(i).getText() +
+            // " and label: " + labeltextField.get(i).getText() + "is set");
+            shared.addTimer(IDTracker, tempLabeltextField.get(i).getText(), Duration.ofSeconds(20));
+            IDTracker++;
+
         }
 
         callCurrentTimersPage(e);
