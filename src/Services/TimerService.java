@@ -110,9 +110,7 @@ public class TimerService {
             });
 
         } catch (InterruptedException ex) {
-            
-        } finally {
-
-        }
+            System.out.println(ex);
+        } 
     }
 }
