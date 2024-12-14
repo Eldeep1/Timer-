@@ -1,15 +1,13 @@
 package ViewModel.CurrentTimers;
 
-import Services.Shared;
+import Services.TimerService;
 import ViewModel.HomePage.HomePageController;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +15,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -41,7 +38,7 @@ public class CurrentTimersController implements Initializable {
     private void createAnchorPanes() {
     try {
         // Iterate over the map entries
-        for (Map.Entry<Integer, TextField> entry : Shared.labeltextField.entrySet()) {
+        for (Map.Entry<Integer, TextField> entry : TimerService.labeltextField.entrySet()) {
             int id = entry.getKey(); 
             TextField textField = entry.getValue(); // Get the TextField (value)
 

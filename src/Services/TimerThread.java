@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 public class TimerThread extends Thread {
     private final Timer timer;
     private final int ID;
-    private final TimerServices service;
+    private final TimerService service;
     private volatile boolean running;
     private volatile boolean paused;
      
@@ -27,7 +27,7 @@ public class TimerThread extends Thread {
         this.ID = timer.getID();
         this.running = true;
         this.paused = false;
-        this.service = new TimerServices();
+        this.service = new TimerService();
     }
 
     public Timer getTimer() {

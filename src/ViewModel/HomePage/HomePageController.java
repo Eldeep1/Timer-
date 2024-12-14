@@ -5,7 +5,7 @@
 package ViewModel.HomePage;
 
 import Model.Timer;
-import Services.Shared;
+import Services.TimerService;
 import ViewModel.CurrentTimers.CurrentTimersController;
 import java.io.IOException;
 import java.net.URL;
@@ -42,15 +42,13 @@ public class HomePageController implements Initializable {
     @FXML
     private VBox textAreaContainer;
 
+    private Map<Integer, TextField> tempTimetextField;
 
+    private Map<Integer, TextField> tempLabeltextField;
 
-        private Map<Integer,TextField> tempTimetextField;
-
-    private Map<Integer,TextField> tempLabeltextField;
-    
     private static int IDTracker = 0;
-    
-    private int tempIDTracker=0;
+
+    private int tempIDTracker = 0;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -60,8 +58,6 @@ public class HomePageController implements Initializable {
         // initializtion temporary array lists
         tempTimetextField = new HashMap<>();
         tempLabeltextField = new HashMap<>();
-
-
 
     }
 
@@ -75,7 +71,6 @@ public class HomePageController implements Initializable {
 
         // tempIdentifiers.add(IDTracker);
         // IDTracker++;
-
         // Create new TextFields and add them to the AnchorPane
         TextField timeTextField = new TextField();
         timeTextField.setLayoutX(8.0);
@@ -83,13 +78,13 @@ public class HomePageController implements Initializable {
         timeTextField.setPromptText("HH:MM:SS");
         // Set a default value for the timeTextField
         timeTextField.setText("00:00:00");
-        tempTimetextField.put(tempIDTracker,timeTextField);
+        tempTimetextField.put(tempIDTracker, timeTextField);
 
         TextField labelTextField = new TextField();
         labelTextField.setLayoutX(179.0);
         labelTextField.setLayoutY(25.0);
         labelTextField.setPromptText("Description");
-        tempLabeltextField.put(tempIDTracker,labelTextField);
+        tempLabeltextField.put(tempIDTracker, labelTextField);
 
         newAnchorPane.getChildren().addAll(timeTextField, labelTextField);
 
@@ -98,7 +93,7 @@ public class HomePageController implements Initializable {
         System.out.println("lol");
 
         textAreaContainer.getChildren().add(newAnchorPane);
-        
+
         tempIDTracker++;
     }
 
@@ -126,13 +121,13 @@ public class HomePageController implements Initializable {
 
     @FXML
     public void onDoneButtonClick(ActionEvent e) {
-        Shared shared = new Shared();
+        TimerService shared = new TimerService();
         for (int i = 0; i < tempIDTracker; i++) {
             IDTracker++;
-            Shared.labeltextField.put(IDTracker,tempLabeltextField.get(i));
+            TimerService.labeltextField.put(IDTracker, tempLabeltextField.get(i));
 //            Shared.timetextField.put(IDTracker,tempTimetextField.get(i));
 
-            Shared.durations.putIfAbsent(IDTracker, new SimpleStringProperty(tempTimetextField.get(i).getText()));
+            TimerService.durations.putIfAbsent(IDTracker, new SimpleStringProperty(tempTimetextField.get(i).getText()));
 
             // Get duration from text field and convert to Duration object
             Duration timerDuration = parseDuration(tempTimetextField.get(i).getText());

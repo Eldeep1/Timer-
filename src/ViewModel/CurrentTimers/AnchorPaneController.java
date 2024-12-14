@@ -1,7 +1,7 @@
 package ViewModel.CurrentTimers;
 
 import Model.Timer;
-import Services.Shared;
+import Services.TimerService;
 import Services.TimerThread;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -25,7 +25,7 @@ public class AnchorPaneController {
         this.ID = id;
 
         // Add a listener to update the UI when the duration changes
-        Shared.durations.get(ID).addListener((observable, oldValue, newValue) -> {
+        TimerService.durations.get(ID).addListener((observable, oldValue, newValue) -> {
             // Ensure the UI update is on the JavaFX Application Thread
             javafx.application.Platform.runLater(() -> {
                 duration.setText(newValue);
@@ -34,25 +34,27 @@ public class AnchorPaneController {
 
         // Initial UI update
         javafx.application.Platform.runLater(() -> {
-            duration.setText(Shared.durations.get(ID).get());
+            duration.setText(TimerService.durations.get(ID).get());
         });
     }
 
     @FXML
     public void onPauseButtonClick() {
 
-        TimerThread thread = Shared.threads.get(ID);
+        TimerThread thread = TimerService.threads.get(ID);
         if (thread.isAlive()) {
-            Timer timer = Shared.timers.get(ID);
+            Timer timer = TimerService.timers.get(ID);
             timer.setRemainingDuration(thread.getTimer().getRemainingDuration());
-            Shared.timers.put(ID, timer);
+            TimerService.timers.put(ID, timer);
             thread.stopThread();
             pauseButton.setText("resume");
-            System.out.println("this thread id is : " + ID);
-        } else {
-            Timer timer = Shared.timers.get(ID);
+        } else if (TimerService.timers.get(ID).getRemainingDuration().equals(Duration.ZERO)){
+            
+        }else
+        {
+            Timer timer = TimerService.timers.get(ID);
             TimerThread newThread = new TimerThread(timer);
-            Shared.threads.put(ID, newThread);
+            TimerService.threads.put(ID, newThread);
             newThread.start();
             pauseButton.setText("pause");
 
@@ -63,14 +65,14 @@ public class AnchorPaneController {
     @FXML
     public void onResetButtonClick() {
 //        Shared.updateDuration(ID, "00:00");
-        Timer timer = Shared.timers.get(ID);
+        Timer timer = TimerService.timers.get(ID);
         timer.setRemainingDuration(timer.getActualDuration());
 
-        TimerThread oldThread = Shared.threads.get(ID);
+        TimerThread oldThread = TimerService.threads.get(ID);
         oldThread.stopThread();
 
         TimerThread thread = new TimerThread(timer);
-        Shared.threads.put(ID, thread);
+        TimerService.threads.put(ID, thread);
         thread.start();
         pauseButton.setText("pause");
 
@@ -78,12 +80,12 @@ public class AnchorPaneController {
 
     @FXML
     public void onDeleteButtonClick() {
-        Shared.threads.get(ID).stopThread();
+        TimerService.threads.get(ID).stopThread();
         
-        Shared.timers.remove(ID);
-        Shared.durations.remove(ID);
-        Shared.labeltextField.remove(ID);
-        Shared.threads.remove(ID);
+        TimerService.timers.remove(ID);
+        TimerService.durations.remove(ID);
+        TimerService.labeltextField.remove(ID);
+        TimerService.threads.remove(ID);
         
         myPane.getChildren().clear();
 
