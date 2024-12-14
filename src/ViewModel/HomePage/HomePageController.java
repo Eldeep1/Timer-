@@ -46,7 +46,7 @@ public class HomePageController implements Initializable {
     private List<TextField> tempTimetextField;
     private List<TextField> tempLabeltextField;
     private List<Integer> tempIdentifiers;
-    private int IDTracker;
+    private static int IDTracker=0;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Initialize the TextArea array
@@ -62,7 +62,6 @@ public class HomePageController implements Initializable {
         labeltextField = Shared.labeltextField;
         identifiers = Shared.identifiers;
         
-        IDTracker=identifiers.size();
     }
 
     @FXML
@@ -74,8 +73,8 @@ public class HomePageController implements Initializable {
         newAnchorPane.setPrefWidth(448.0);
         
         
-        tempIdentifiers.add(IDTracker);
-        IDTracker++;
+//        tempIdentifiers.add(IDTracker);
+//        IDTracker++;
         
         // Create new TextFields and add them to the AnchorPane
         TextField timeTextField = new TextField();
@@ -105,15 +104,16 @@ public class HomePageController implements Initializable {
     public void onDoneButtonClick(ActionEvent e) {
         Shared shared=new Shared();
         for (int i = 0; i < tempLabeltextField.size(); i++) {
+            IDTracker++;
             Shared.labeltextField.add(tempLabeltextField.get(i));
             Shared.timetextField.add(tempTimetextField.get(i));
-            Shared.identifiers.add(tempIdentifiers.get(i));
+            Shared.identifiers.add(IDTracker);
             
-            Shared.durations.putIfAbsent(tempIdentifiers.get(i), new SimpleStringProperty(tempTimetextField.get(i).getText())); // Default value
+            Shared.durations.putIfAbsent(IDTracker, new SimpleStringProperty(tempTimetextField.get(i).getText())); // Default value
 
             
 //            System.out.println("the timer with time: " + timetextField.get(i).getText() + " and label: " + labeltextField.get(i).getText() + "is set");
-            shared.addTimer(identifiers.get(i), tempLabeltextField.get(i).getText(), Duration.ofSeconds(100));
+            shared.addTimer(IDTracker, tempLabeltextField.get(i).getText(), Duration.ofSeconds(40));
         }
 
         callCurrentTimersPage(e);
