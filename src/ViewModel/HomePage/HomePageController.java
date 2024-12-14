@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -107,8 +108,12 @@ public class HomePageController implements Initializable {
             Shared.labeltextField.add(tempLabeltextField.get(i));
             Shared.timetextField.add(tempTimetextField.get(i));
             Shared.identifiers.add(tempIdentifiers.get(i));
+            
+            Shared.durations.putIfAbsent(tempIdentifiers.get(i), new SimpleStringProperty(tempTimetextField.get(i).getText())); // Default value
+
+            
 //            System.out.println("the timer with time: " + timetextField.get(i).getText() + " and label: " + labeltextField.get(i).getText() + "is set");
-            shared.addTimer(identifiers.get(i), tempLabeltextField.get(i).getText(), Duration.ofSeconds(10));
+            shared.addTimer(identifiers.get(i), tempLabeltextField.get(i).getText(), Duration.ofSeconds(100));
         }
 
         callCurrentTimersPage(e);

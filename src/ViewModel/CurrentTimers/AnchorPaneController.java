@@ -13,13 +13,22 @@ public class AnchorPaneController {
     @FXML
     private Label duration;
 
-    public void setID(int id) {
-        this.ID = id;
-         Shared.durations.get(ID).addListener((observable, oldValue, newValue) -> {
-                duration.setText(newValue);
-            });
-         duration.setText(Shared.durations.get(ID).get());
-    }
+public void setID(int id) {
+    this.ID = id;
+    
+    // Add a listener to update the UI when the duration changes
+    Shared.durations.get(ID).addListener((observable, oldValue, newValue) -> {
+        // Ensure the UI update is on the JavaFX Application Thread
+        javafx.application.Platform.runLater(() -> {
+            duration.setText(newValue);
+        });
+    });
+
+    // Initial UI update
+    javafx.application.Platform.runLater(() -> {
+        duration.setText(Shared.durations.get(ID).get());
+    });
+}
     @FXML
     public void onPauseButtonClick() {
         

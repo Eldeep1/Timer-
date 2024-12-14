@@ -57,7 +57,7 @@ public class CurrentTimersController implements Initializable {
 
                 int id = identifiers.get(i);
                 
-                Shared.durations.putIfAbsent(id, new SimpleStringProperty(timeTextField.get(i).getText())); // Default value
+//                Shared.durations.putIfAbsent(id, new SimpleStringProperty(timeTextField.get(i).getText())); // Default value
                 //set the ID to each pane
 
                 // Set the controller for the AnchorPane

@@ -5,8 +5,12 @@
         <group>
             <file>file:/O:/studies/faculty/fourth%20year/semester%201/parallel/project/fx%20tutorials/BeingSerious/src/ViewModel/CurrentTimers/CurrentTimersController.java</file>
             <file>file:/O:/studies/faculty/fourth%20year/semester%201/parallel/project/fx%20tutorials/BeingSerious/src/ViewModel/CurrentTimers/AnchorPaneController.java</file>
+            <file>file:/O:/studies/faculty/fourth%20year/semester%201/parallel/project/fx%20tutorials/BeingSerious/src/Services/TimerServices.java</file>
+            <file>file:/O:/studies/faculty/fourth%20year/semester%201/parallel/project/fx%20tutorials/BeingSerious/src/Services/TimerThread.java</file>
             <file>file:/O:/studies/faculty/fourth%20year/semester%201/parallel/project/fx%20tutorials/BeingSerious/src/ViewModel/HomePage/HomePageController.java</file>
+            <file>file:/O:/studies/faculty/fourth%20year/semester%201/parallel/project/fx%20tutorials/BeingSerious/src/Model/Timer.java</file>
             <file>file:/O:/studies/faculty/fourth%20year/semester%201/parallel/project/fx%20tutorials/BeingSerious/src/Services/Shared.java</file>
+            <file>file:/O:/studies/faculty/fourth%20year/semester%201/parallel/project/fx%20tutorials/BeingSerious/src/view/CurrentTimers/CurrentTimers.fxml</file>
             <file>file:/O:/studies/faculty/fourth%20year/semester%201/parallel/project/fx%20tutorials/BeingSerious/src/view/CurrentTimers/AnchorPaneTemplate.fxml</file>
             <file>file:/O:/studies/faculty/fourth%20year/semester%201/parallel/project/fx%20tutorials/BeingSerious/src/beingserious/BeingSerious.java</file>
         </group>

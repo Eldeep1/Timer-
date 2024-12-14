@@ -51,7 +51,7 @@ public class TimerThread extends Thread {
             timer.setRemainingDuration(timer.getRemainingDuration().minusSeconds(1));
 
             // Call the service method (assuming it updates some UI or logs)
-            service.startTimer(timer);
+            service.startTimer(timer,ID);
             //meow
                // call the update function
             try {

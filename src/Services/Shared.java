@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.TextField;
 
@@ -40,9 +41,13 @@ public class Shared {
     // Method to update duration
     public static void updateDuration(int id, String newDuration) {
         if (durations.containsKey(id)) {
-            System.out.println("the id of the timer is: "+ id+" and the new duration is"+newDuration);
+            System.out.println("the id of the timer is: "+ id+" and the new duration is "+newDuration);
             
             durations.get(id).set(newDuration);
+//                durations.putIfAbsent(id, new SimpleStringProperty(newDuration)); // Default value
+
+//                        durations.get(id).set(new SimpleStringProperty(newDuration));
+
         }
     }
 

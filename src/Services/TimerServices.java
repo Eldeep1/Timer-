@@ -5,9 +5,7 @@ import java.time.Duration;
 import java.time.LocalTime;
 
 public class TimerServices {
-private int ID;
     public Timer addTimer(int ID, String label, Duration duration) {
-        this.ID=ID;
         Timer timer = new Timer();
         timer.setActualDuration(duration);
         //
@@ -15,7 +13,7 @@ private int ID;
 
         timer.setLabel(label);
         timer.setID(ID); // use this until we find better solution
-        this.startTimer(timer);
+        this.startTimer(timer, ID);
         return timer;
     }
 
@@ -23,16 +21,16 @@ private int ID;
     // remove from the list
     // }
 
-    public void restartTimer(Timer timer) {
+    public void restartTimer(Timer timer, int ID) {
         timer.setRemainingDuration(timer.getActualDuration());
-        this.startTimer(timer);
+        this.startTimer(timer,ID);
     }
 
     // public void pauseTimer(Timer t){
     // pause by gui??
     // }
 
-    public void startTimer(Timer timer) {
+    public void startTimer(Timer timer, int ID) {
         timer.setStartTime(LocalTime.now());
         timer.setEndTime(timer.getStartTime().plus(timer.getRemainingDuration()));
 
