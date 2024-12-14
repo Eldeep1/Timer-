@@ -6,11 +6,8 @@ package Services;
 
 import Model.Timer;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.TextField;
 
@@ -28,7 +25,7 @@ public class Shared {
 
     public static Map<Integer, StringProperty> durations = new HashMap<>();
 
-    private TimerServices service;
+    private final TimerServices service;
 
     public Shared() {
         this.service = new TimerServices();

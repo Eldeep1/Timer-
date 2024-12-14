@@ -3,8 +3,14 @@ package Services;
 import Model.Timer;
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.concurrent.Semaphore;
 
 public class TimerServices {
+    
+    private static final Semaphore semaphore = new Semaphore(1);
+    
     public Timer addTimer(int ID, String label, Duration duration) {
         Timer timer = new Timer();
         timer.setActualDuration(duration);
@@ -17,19 +23,6 @@ public class TimerServices {
         return timer;
     }
 
-    // public void deleteTimer(int ID){
-    // remove from the list
-    // }
-
-    public void restartTimer(Timer timer, int ID) {
-        timer.setRemainingDuration(timer.getActualDuration());
-        this.startTimer(timer,ID);
-    }
-
-    // public void pauseTimer(Timer t){
-    // pause by gui??
-    // }
-
     public void startTimer(Timer timer, int ID) {
         timer.setStartTime(LocalTime.now());
         timer.setEndTime(timer.getStartTime().plus(timer.getRemainingDuration()));
@@ -39,5 +32,23 @@ public class TimerServices {
   
         Shared.updateDuration(ID, duration);
 //         System.out.println("Difference: " + minutes + " minutes and " + seconds + "seconds");
+    }
+    
+    public void notifyUser(TimerThread thread){
+        try {
+            semaphore.acquire(); 
+            System.out.println("in the critical section");
+
+            // gui show notfication
+            System.out.println(thread.getTimer().getLabel());
+            Thread.sleep(3000);
+            
+            semaphore.release(); 
+            System.out.println("leaving the critical section");
+        } catch (InterruptedException ex) {
+            Logger.getLogger(TimerServices.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+  
+        }
     }
 }

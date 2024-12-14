@@ -4,8 +4,8 @@
  */
 package Services;
 
+
 import Model.Timer;
-import Services.TimerServices;
 import java.time.Duration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +20,7 @@ public class TimerThread extends Thread {
     private final TimerServices service;
     private volatile boolean running;
     private volatile boolean paused;
+     
 
     public TimerThread(Timer timer) {
         this.timer = timer;
@@ -63,8 +64,12 @@ public class TimerThread extends Thread {
                 Logger.getLogger(TimerThread.class.getName()).log(Level.SEVERE, "Thread sleep interrupted", e);
             }
         }
-
-        System.out.println("Timer " + ID + " has finished.");
+        if(timer.getRemainingDuration().equals(Duration.ZERO)){
+            service.notifyUser(this);
+            //System.out.println("Timer " + ID + " has finished.");
+        }
+        else
+            System.out.println("Timer " + ID + " has paused.");
     }
 
     // Stop the thread completely
