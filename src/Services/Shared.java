@@ -38,14 +38,23 @@ public class Shared {
     }
 
     // Method to update duration
-    public static void updateDuration(int id, String newDuration) {
+    public static void updateDuration(int id, Duration newDuration) {
         if (durations.containsKey(id)) {
             System.out.println("the id of the timer is: " + id + " and the new duration is " + newDuration);
+            
+            long hours = newDuration.toHours();                    
+            long minutes = newDuration.toMinutes()%60;
+            long seconds = newDuration.toSeconds() % 60;
 
-            durations.get(id).set(newDuration);
-//                durations.putIfAbsent(id, new SimpleStringProperty(newDuration)); // Default value
-
-//                        durations.get(id).set(new SimpleStringProperty(newDuration));
+            String current_duration = "";
+            
+            current_duration+=((hours<=9 ? ("0"+Long.toString(hours)):Long.toString(hours)));
+            current_duration += " : ";
+            current_duration+=((minutes<=9 ? ("0"+Long.toString(minutes)):Long.toString(minutes)));
+            current_duration += " : ";
+            current_duration+=((seconds<=9 ? ("0"+Long.toString(seconds)):Long.toString(seconds)));
+            System.out.println(current_duration);
+            durations.get(id).set(current_duration);
         }
     }
 
