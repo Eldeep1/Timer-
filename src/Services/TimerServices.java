@@ -37,9 +37,12 @@ public class TimerServices {
         // System.out.println(timer.getRemainingDuration());
         Duration duration = timer.getRemainingDuration();
         
-        long minutes = duration.toMinutes();
+        long minutes = duration.toMinutes()%60;
         long seconds = duration.toSeconds() % 60;
-        Shared.updateDuration(ID, Long.toString(seconds));
+        long hours = duration.toHours();
+        
+        
+        Shared.updateDuration(ID, hours+":"+minutes+":"+Long.toString(seconds));
 //         System.out.println("Difference: " + minutes + " minutes and " + seconds + "seconds");
     }
 }

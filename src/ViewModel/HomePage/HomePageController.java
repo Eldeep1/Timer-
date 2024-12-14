@@ -135,6 +135,7 @@ public class HomePageController implements Initializable {
 
             // Get duration from text field and convert to Duration object
             Duration timerDuration = parseDuration(tempTimetextField.get(i).getText());
+            System.out.println(timerDuration);
             shared.addTimer(IDTracker, tempLabeltextField.get(i).getText(), timerDuration);
         }
 
