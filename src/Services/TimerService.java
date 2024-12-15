@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Services;
 
 import Model.Timer;
@@ -10,8 +6,9 @@ import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.StringProperty;
@@ -21,10 +18,6 @@ import javafx.scene.image.Image;
 import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 
-/**
- *
- * @author Depogramming
- */
 public class TimerService {
 
     private static final Semaphore semaphore = new Semaphore(1);
@@ -59,16 +52,13 @@ public class TimerService {
         }
     }
 
-    //
     public Timer addTimer(int ID, String label, Duration duration) {
         Timer timer = new Timer();
 
-        // update gui??
         timer.setActualDuration(duration);
-        //
         timer.setRemainingDuration(duration);
         timer.setLabel(label);
-        timer.setID(ID); // use this until we find better solution
+        timer.setID(ID);
         this.startTimer(timer, ID);
         TimerThread thread = new TimerThread(timer);
         threads.put(ID, thread);
@@ -95,31 +85,57 @@ public class TimerService {
     public void notifyUser(TimerThread thread) {
         try {
             semaphore.acquire();
-            System.out.println("in the critical section");
+            // System.out.println("Entering the critical section");
+            System.out.println("Thread " + thread.getTimer().getLabel() + " is in the critical section");
 
             javafx.application.Platform.runLater(() -> {
-                AudioClip notificationSound = new AudioClip(getClass().getResource("/Assets/notification_sound.mp3").toString());
-                notificationSound.play();   
+                AudioClip notificationSound = new AudioClip(
+                        getClass().getResource("/Assets/notification_sound.mp3").toString());
+                notificationSound.play();
+
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Timer Notification");
                 alert.setHeaderText("Timer Alert");
-                alert.setContentText("The timer \"" + thread.getTimer().getLabel() + "\" has finished!");
+
+                // Initialize countdown
+                IntegerProperty countdown = new SimpleIntegerProperty(10);
+
+                // Set initial content text
+                alert.setContentText("The timer \"" + thread.getTimer().getLabel() + "\" has finished!\nClosing in "
+                        + countdown.get() + " seconds.");
 
                 // Add a custom icon
                 Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-                stage.getIcons().add(new Image(getClass().getResourceAsStream("/Assets/alarm.png"))); // Add your custom icon here
+                stage.getIcons().add(new Image(getClass().getResourceAsStream("/Assets/alarm.png")));
 
-                alert.showAndWait();
-                if (thread.getTimer().isPromodoro()) {
-                    numberOfSessions.set(numberOfSessions.get() + 1);
+                // Create a Timeline for the countdown
+                Timeline timeline = new Timeline(
+                        new KeyFrame(
+                                javafx.util.Duration.seconds(1),
+                                event -> {
+                                    countdown.set(countdown.get() - 1);
+                                    if (countdown.get() <= 0) {
+                                        alert.close();
+                                    } else {
+                                        alert.setContentText("The timer \"" + thread.getTimer().getLabel()
+                                                + "\" has finished!\nClosing in " + countdown.get() + " seconds.");
+                                    }
+                                }));
+                timeline.setCycleCount(10);
+                timeline.play();
 
-                }
-                notificationSound.stop();
-                // Release the semaphore after the user clicks OK
-                semaphore.release();
+                // Handle alert closure
+                alert.setOnHidden(event -> {
+                    if (thread.getTimer().isPromodoro()) {
+                        numberOfSessions.set(numberOfSessions.get() + 1);
+                    }
+                    notificationSound.stop();
+                    timeline.stop();
+                    semaphore.release();
+                    System.out.println("Thread: " + thread.getTimer().getLabel() + " is leaving the critical section");
+                });
 
-                System.out.println("leaving the critical section");
-
+                alert.show();
             });
 
         } catch (InterruptedException ex) {

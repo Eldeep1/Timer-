@@ -23,50 +23,46 @@ import javafx.stage.Stage;
 
 public class CurrentTimersController implements Initializable {
 
-
     @FXML
-    private VBox textAreaContainer; // Add a VBox in your main FXML to hold the AnchorPanes
+    private VBox textAreaContainer;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Initialize your controller here
-
         createAnchorPanes();
 
     }
 
     private void createAnchorPanes() {
-    try {
-        // Iterate over the map entries
-        for (Map.Entry<Integer, TextField> entry : TimerService.labeltextField.entrySet()) {
-            int id = entry.getKey(); 
-            TextField textField = entry.getValue(); // Get the TextField (value)
+        try {
+            // Iterate over the map entries
+            for (Map.Entry<Integer, TextField> entry : TimerService.labeltextField.entrySet()) {
+                int id = entry.getKey();
+                TextField textField = entry.getValue(); // Get the TextField (value)
 
-            // Load the AnchorPane template
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/CurrentTimers/AnchorPaneTemplate.fxml"));
-            AnchorPane anchorPane = loader.load();
+                // Load the AnchorPane template
+                FXMLLoader loader = new FXMLLoader(
+                        getClass().getResource("/view/CurrentTimers/AnchorPaneTemplate.fxml"));
+                AnchorPane anchorPane = loader.load();
 
-            
-            Label label = (Label) anchorPane.lookup("#description");
-            label.setText(textField.getText());
+                Label label = (Label) anchorPane.lookup("#description");
+                label.setText(textField.getText());
 
-            // Initialize the controller for this AnchorPane
-            AnchorPaneController anchorPaneController = loader.getController();
-            anchorPaneController.setID(id);
+                // Initialize the controller for this AnchorPane
+                AnchorPaneController anchorPaneController = loader.getController();
+                anchorPaneController.setID(id);
 
-            // Add the AnchorPane to the container
-            textAreaContainer.getChildren().add(anchorPane);
+                // Add the AnchorPane to the container
+                textAreaContainer.getChildren().add(anchorPane);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
     }
-}
-
 
     @FXML
     public void callAddTimersPage(ActionEvent e) {
-
         Parent root;
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/HomePage/HomePage.fxml"));
             root = loader.load();
@@ -78,8 +74,8 @@ public class CurrentTimersController implements Initializable {
             Logger.getLogger(HomePageController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
- @FXML
+
+    @FXML
     public void openPromoDoro(ActionEvent e) {
 
         Parent root;

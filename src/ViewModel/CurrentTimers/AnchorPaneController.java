@@ -5,7 +5,6 @@ import Services.TimerService;
 import Services.TimerThread;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import java.time.Duration;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
@@ -19,8 +18,9 @@ public class AnchorPaneController {
     @FXML
     private Button pauseButton;
 
-        @FXML
+    @FXML
     private AnchorPane myPane;
+
     public void setID(int id) {
         this.ID = id;
 
@@ -48,10 +48,9 @@ public class AnchorPaneController {
             TimerService.timers.put(ID, timer);
             thread.stopThread();
             pauseButton.setText("resume");
-        } else if (TimerService.timers.get(ID).getRemainingDuration().equals(Duration.ZERO)){
-            
-        }else
-        {
+        } else if (TimerService.timers.get(ID).getRemainingDuration().equals(Duration.ZERO)) {
+
+        } else {
             Timer timer = TimerService.timers.get(ID);
             TimerThread newThread = new TimerThread(timer);
             TimerService.threads.put(ID, newThread);
@@ -64,7 +63,7 @@ public class AnchorPaneController {
 
     @FXML
     public void onResetButtonClick() {
-//        Shared.updateDuration(ID, "00:00");
+        // Shared.updateDuration(ID, "00:00");
         Timer timer = TimerService.timers.get(ID);
         timer.setRemainingDuration(timer.getActualDuration());
 
@@ -81,12 +80,12 @@ public class AnchorPaneController {
     @FXML
     public void onDeleteButtonClick() {
         TimerService.threads.get(ID).stopThread();
-        
+
         TimerService.timers.remove(ID);
         TimerService.durations.remove(ID);
         TimerService.labeltextField.remove(ID);
         TimerService.threads.remove(ID);
-        
+
         myPane.getChildren().clear();
 
     }

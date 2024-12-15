@@ -11,8 +11,8 @@ public class Timer {
     private Duration actualDuration;
     private Duration remainingDuration;
     private boolean promodoro;
-    public Timer() {
 
+    public Timer() {
     }
 
     public Timer(int ID, String label, LocalTime startTime, LocalTime endTime, Duration actualDuration,
@@ -80,5 +80,5 @@ public class Timer {
     public void setPromodoro(boolean promodoro) {
         this.promodoro = promodoro;
     }
-    
+
 }

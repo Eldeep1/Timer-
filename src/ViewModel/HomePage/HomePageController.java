@@ -1,12 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package ViewModel.HomePage;
 
-import Model.Timer;
 import Services.TimerService;
-import ViewModel.CurrentTimers.CurrentTimersController;
 import java.io.IOException;
 import java.net.URL;
 import java.time.Duration;
@@ -25,17 +19,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-/**
- * FXML Controller class
- *
- * @author Depogramming
- */
 public class HomePageController implements Initializable {
 
     private List<AnchorPane> anchorPane;
@@ -69,9 +57,6 @@ public class HomePageController implements Initializable {
         newAnchorPane.setPrefHeight(74.0);
         newAnchorPane.setPrefWidth(448.0);
 
-        // tempIdentifiers.add(IDTracker);
-        // IDTracker++;
-        // Create new TextFields and add them to the AnchorPane
         TextField timeTextField = new TextField();
         timeTextField.setLayoutX(8.0);
         timeTextField.setLayoutY(25.0);
@@ -125,7 +110,7 @@ public class HomePageController implements Initializable {
         for (int i = 0; i < tempIDTracker; i++) {
             IDTracker++;
             TimerService.labeltextField.put(IDTracker, tempLabeltextField.get(i));
-//            Shared.timetextField.put(IDTracker,tempTimetextField.get(i));
+            // Shared.timetextField.put(IDTracker,tempTimetextField.get(i));
 
             TimerService.durations.putIfAbsent(IDTracker, new SimpleStringProperty(tempTimetextField.get(i).getText()));
 
@@ -153,7 +138,7 @@ public class HomePageController implements Initializable {
             Logger.getLogger(HomePageController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @FXML
     public void openPromoDoro(ActionEvent e) {
 
