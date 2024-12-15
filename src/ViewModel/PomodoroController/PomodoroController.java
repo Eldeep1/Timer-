@@ -52,21 +52,33 @@ public class PomodoroController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
         this.ID = 999;
 
-        sessionNum.setText(String.valueOf(TimerService.numberOfSessions));
-
+        // Restore the number of sessions
+        sessionNum.setText(String.valueOf(TimerService.numberOfSessions.get()));
+            if (!TimerService.pomodoro.isZero()) {
+        promoTime.setText(formatDuration(TimerService.pomodoro));
+    }
         TimerService.numberOfSessions.addListener((observable, oldValue, newValue) -> {
-            javafx.application.Platform.runLater(() -> {
-                sessionNum.setText(String.valueOf(newValue.intValue()));
+            javafx.application.Platform.runLater(() -> sessionNum.setText(String.valueOf(newValue.intValue())));
+        });
+
+        // Check if a timer already exists for this ID
+        Timer existingTimer = TimerService.timers.get(ID);
+        if (existingTimer != null) {
+            // Restore the timer state
+            duration.setText(formatDuration(existingTimer.getRemainingDuration()));
+            if (TimerService.threads.get(ID) != null && TimerService.threads.get(ID).isAlive()) {
+                pauseButton.setText("pause");
+            } else {
+                pauseButton.setText("resume");
+            }
+
+            // Attach a listener to update the duration in real time
+            TimerService.durations.get(ID).addListener((observable, oldValue, newValue) -> {
+                javafx.application.Platform.runLater(() -> duration.setText(newValue));
             });
-        });
-
-        javafx.application.Platform.runLater(() -> {
-            sessionNum.setText(String.valueOf(TimerService.numberOfSessions.get()));
-        });
-
+        }
     }
 
     @FXML
@@ -120,30 +132,31 @@ public class PomodoroController implements Initializable {
         // thread.start();
     }
 
-    private static Duration parseDuration(String timeString) {
-        String[] parts = timeString.split(":");
+    private static Duration parseDuration(String input) {
+    try {
+        input = input.trim(); // Trim any leading/trailing spaces
+        String[] parts = input.split(":");
+
         if (parts.length != 3) {
-            throw new IllegalArgumentException("Invalid time format: " + timeString);
+            throw new IllegalArgumentException("Invalid time format: " + input);
         }
 
-        try {
-            int hours = Integer.parseInt(parts[0]);
-            int minutes = Integer.parseInt(parts[1]);
-            int seconds = Integer.parseInt(parts[2]);
+        int hours = Integer.parseInt(parts[0].trim());
+        int minutes = Integer.parseInt(parts[1].trim());
+        int seconds = Integer.parseInt(parts[2].trim());
 
-            // Validation
-            if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59 || seconds < 0 || seconds > 59) {
-                throw new IllegalArgumentException("Invalid time values: " + timeString);
-            }
-
-            return Duration.ofHours(hours).plusMinutes(minutes).plusSeconds(seconds);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid time format: " + timeString, e);
-        }
+        return Duration.ofHours(hours).plusMinutes(minutes).plusSeconds(seconds);
+    } catch (NumberFormatException e) {
+        throw new IllegalArgumentException("Invalid numeric value in time format: " + input, e);
     }
+}
 
     @FXML
     public void startPromodoro(ActionEvent e) {
+                TimerService.pomodoro = parseDuration(promoTime.getText());
+
+        pauseButton.setText("pause");
+
         TimerService shared = new TimerService();
 //            Shared.timetextField.put(IDTracker,tempTimetextField.get(i));
         TimerService.durations.putIfAbsent(ID, new SimpleStringProperty(promoTime.getText()));

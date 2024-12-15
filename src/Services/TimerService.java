@@ -18,6 +18,7 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 
 /**
@@ -25,15 +26,15 @@ import javafx.stage.Stage;
  * @author Depogramming
  */
 public class TimerService {
+
     private static final Semaphore semaphore = new Semaphore(1);
-    public static Duration pomodoro= Duration.ZERO;
+    public static Duration pomodoro = Duration.ZERO;
     public static Map<Integer, TextField> labeltextField = new HashMap<>();
-      public static final IntegerProperty numberOfSessions = new SimpleIntegerProperty(0);
+    public static final IntegerProperty numberOfSessions = new SimpleIntegerProperty(0);
     public static Map<Integer, TimerThread> threads = new HashMap<>();
     public static Map<Integer, Timer> timers = new HashMap<>();
 
     public static Map<Integer, StringProperty> durations = new HashMap<>();
-
 
     public TimerService() {
 
@@ -75,13 +76,13 @@ public class TimerService {
         thread.start();
         return timer;
     }
-    
+
     public Timer addTimer(int ID, String label, Duration duration, boolean promodoro) {
         Timer timer = addTimer(ID, label, duration);
         timer.setPromodoro(promodoro);
         return timer;
     }
-    
+
     public void startTimer(Timer timer, int ID) {
         timer.setStartTime(LocalTime.now());
         timer.setEndTime(timer.getStartTime().plus(timer.getRemainingDuration()));
@@ -90,10 +91,6 @@ public class TimerService {
 
         TimerService.updateDuration(ID, duration);
     }
-    
-
-
-
 
     public void notifyUser(TimerThread thread) {
         try {
@@ -101,6 +98,8 @@ public class TimerService {
             System.out.println("in the critical section");
 
             javafx.application.Platform.runLater(() -> {
+                AudioClip notificationSound = new AudioClip(getClass().getResource("/Assets/notification_sound.mp3").toString());
+                notificationSound.play();   
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Timer Notification");
                 alert.setHeaderText("Timer Alert");
@@ -112,18 +111,19 @@ public class TimerService {
 
                 alert.showAndWait();
                 if (thread.getTimer().isPromodoro()) {
-                   numberOfSessions.set(numberOfSessions.get() + 1);
+                    numberOfSessions.set(numberOfSessions.get() + 1);
 
                 }
+                notificationSound.stop();
                 // Release the semaphore after the user clicks OK
                 semaphore.release();
-                
+
                 System.out.println("leaving the critical section");
-                
+
             });
 
         } catch (InterruptedException ex) {
             System.out.println(ex);
-        } 
+        }
     }
 }
