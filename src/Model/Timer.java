@@ -10,7 +10,7 @@ public class Timer {
     private LocalTime endTime;
     private Duration actualDuration;
     private Duration remainingDuration;
-
+    private boolean promodoro;
     public Timer() {
 
     }
@@ -72,4 +72,13 @@ public class Timer {
     public void setRemainingDuration(Duration remainingDuration) {
         this.remainingDuration = remainingDuration;
     }
+
+    public boolean isPromodoro() {
+        return promodoro;
+    }
+
+    public void setPromodoro(boolean promodoro) {
+        this.promodoro = promodoro;
+    }
+    
 }

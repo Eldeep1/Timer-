@@ -23,6 +23,7 @@
                <children>
                   <Button layoutX="5.0" layoutY="70.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="110.0" text="Add Timer" />
                   <Button layoutX="3.0" layoutY="142.0" mnemonicParsing="false" onAction="#callCurrentTimersPage" prefHeight="40.0" prefWidth="110.0" text="Current Timer" />
+                  <Button fx:id="promodoroButton" layoutY="215.0" mnemonicParsing="false" onAction="#openPromoDoro" prefHeight="40.0" prefWidth="110.0" text="promodoro" />
                </children>
             </AnchorPane>
             <ScrollPane GridPane.columnIndex="1">
